@@ -26,6 +26,20 @@ EndScriptData */
 
 enum
 {
+	// Ashbringer Mograine Renault Event
+	SAY_MOGRAINE_ASH_1 = -1999934,
+	SAY_MOGRAINE_ASH_2 = -1999935,
+	SAY_MOGRAINE_ASH_3 = -1999936,
+	SAY_MOGRAINE_ASH_4 = -1999937,
+	SAY_MOGRAINE_ASH_5 = -1999938,
+	SAY_MOGRAINE_ASH_6 = -1999939,
+	SPELL_FORGIVENESS = 28697,
+	SOUND_LIGHTNING_SCHOCK = 35,
+	// Mograine Emotes
+	EMOTE_ONES_TALk = 1,
+	EMOTE_ONES_YELL = 5,
+	EMOTE_ONES_POINT = 25,
+
     // Mograine says
     SAY_MO_AGGRO                 = -1189005,
     SAY_MO_KILL                  = -1189006,
