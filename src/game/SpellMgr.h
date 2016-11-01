@@ -798,7 +798,7 @@ inline bool IsPositiveEffect(const SpellEntry* spellproto, SpellEffectIndex effI
             switch (spellproto->Id)
             {
                 case 28441:                                 // AB Effect 000
-                    return false;
+                    return true;                            // Ashbringer spell needs to register on friendly NPCs
                 case 18153:                                 // Kodo Kombobulator
                     return true;
                 default:
