@@ -15,12 +15,21 @@ enum
     NPC_WHITEMANE                   = 3977,
     NPC_VORREL                      = 3981,
     NPC_INTERROGATOR_VISHAS         = 3983,
+	NPC_MOGRAINE_TRANSFORM          = 16440,
 
     GO_WHITEMANE_DOOR               = 104600,
 
     SAY_TRIGGER_VORREL              = -1189015,
+	AURA_ASHBRINGER                 = 28282,
+	SPELL_ASHBRINGER                = 28441,
+	FACTION_FRIENDLY                = 35,
+	FACTION_HOSTILE                 = 67,
 };
-
+//Coords used to spawn Mograine at the entrance to Cathedral (stairs)																						
+static const float aMograineSpawnPosition[4] = { 1065.13f, 1399.35f, 30.7637f,0.025f };
+//Coords for end walk location for Mograine (inside Catehdral, stairs)
+static const float aMograineThronePosition[4] = { 1150.40f, 1398.41f, 32.25f, 0.025f };
+static bool m_hasashbringer;
 class instance_scarlet_monastery : public ScriptedInstance
 {
     public:
@@ -28,6 +37,7 @@ class instance_scarlet_monastery : public ScriptedInstance
 
         void Initialize() override;
 
+		void OnPlayerEnter(Player* pPlayer) override;
         void OnCreatureCreate(Creature* pCreature) override;
         void OnCreatureDeath(Creature* pCreature) override;
         void OnObjectCreate(GameObject* pGo) override;
