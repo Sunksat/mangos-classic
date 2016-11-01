@@ -24,6 +24,70 @@ EndScriptData */
 #include "precompiled.h"
 #include "scarlet_monastery.h"
 
+enum {
+	//Mograine say on player enter with Ashbringer
+	SAY_MOGRAINE_ASHBRINGER = -1999926,
+	//Ashbringer NPC Says
+	SAY_ASHBRINGER_1 = -1999927,
+	SAY_ASHBRINGER_2 = -1999928,
+	SAY_ASHBRINGER_3 = -1999929,
+	SAY_ASHBRINGER_4 = -1999930,
+	SAY_ASHBRINGER_5 = -1999931,
+	SAY_ASHBRINGER_6 = -1999932,
+	SAY_ASHBRINGER_7 = -1999933,
+	// Scarlet Myrmidon & Spells
+	NPC_SCARLET_MYRMIDON = 4295,
+	// Scarlet Defender & Spells
+	NPC_SCARLET_DEFENDER = 4298,
+	SPELL_DEF_STANCE = 7164,
+	SPELL_SH_BASH = 11972,
+	SPELL_IMP_BLOCK = 3639,
+	// Scarlet Sorcerer & Spells
+	NPC_SCARLET_SORCERER = 4294,
+	SPELL_FROSTBOLT = 9672,
+	SPELL_SLOW = 6146,
+	// Scarlet Wizard & Spells
+	NPC_SCARLET_WIZARD = 4300,
+	SPELL_FIRESHIELD_III = 2601,
+	SPELL_ARCANE_EXPLOSION = 8439,
+	// Scarlet Centurion & Spells
+	SPELL_BATTLESHOUT = 9128,
+	NPC_SCARLET_CENTURION = 4301,
+	// Scarlet Abbot & Spells
+	NPC_SCARLET_ABBOT = 4303,
+	SPELL_HEAL = 6064,
+	// Scarlet Monk & Spells
+	NPC_SCARLET_MONK = 4540,
+	SPELL_TRASH = 8876,
+	SPELL_KICK = 11978,
+	// Scarlet Chaplain & Spells
+	NPC_SCARLET_CHAPLAIN = 4299,
+	SPELL_PowerWordShield = 6066,
+	// Scarlet Champion & Spells
+	NPC_SCARLET_CHAMPION = 4302,
+	SPELL_HOLYSTRIKE = 17143,
+	// Common Spells
+	SPELL_RENEW = 8362,
+	SPELL_INNERFIRE = 1006,
+	SPELL_FRENZY = 8269, // Not Working?
+	FAIRBANKS_TRANSFORM_HUMAN = 28443, //ID: 16439
+	SPELL_CURSEOFBLOOD = 8282,
+	SPELL_DISPELMAGIC = 15090,
+	SPELL_FEAR = 12096,
+	SPELL_SLEEP = 8399,
+	SPELL_FB_HEAL = 12039,
+	SPELL_FB_POWERWORDSHIELD = 11647,
+	// Common for most NPCs
+	EMOTE_ENRAGE = -1000003,
+	EMOTE_FLEE = -1000007,
+	NPC_FLEE = 25,
+	// Normal NPC Say on Aggro - Myrmidon, Defender, Centurion, Abbot, Monk, Chaplain, Champion
+	RAN_SAY_AGGRO_1 = -1999940,
+	RAN_SAY_AGGRO_2 = -1999941,
+	RAN_SAY_AGGRO_3 = -1999942,
+	RAN_SAY_AGGRO_4 = -1999943,
+};
+
 instance_scarlet_monastery::instance_scarlet_monastery(Map* pMap) : ScriptedInstance(pMap)
 {
     Initialize();
