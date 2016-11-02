@@ -75,40 +75,68 @@ struct boss_scarlet_commander_mograineAI : public ScriptedAI
 
     ScriptedInstance* m_pInstance;
 
+	ObjectGuid m_playerGuid;
+
+	uint32 m_uiSpeechTimer;
+	uint8 m_uiSpeechNum;
     uint32 m_uiCrusaderStrike_Timer;
     uint32 m_uiHammerOfJustice_Timer;
 
     bool m_bHasDied;
     bool m_bHeal;
     bool m_bFakeDeath;
+	bool m_AshSpellTriggerOnce;
 
     void Reset() override
     {
         m_uiCrusaderStrike_Timer  = 8400;
         m_uiHammerOfJustice_Timer = 9600;
+		m_uiSpeechTimer           = 0;
+		m_uiSpeechNum             = 0;
 
         m_bHasDied                = false;
         m_bHeal                   = false;
         m_bFakeDeath              = false;
+		m_AshSpellTriggerOnce     = false;
+		m_playerGuid.Clear();
 
         // Incase wipe during phase that mograine fake death
         m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
         m_creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
         m_creature->SetStandState(UNIT_STAND_STATE_STAND);
     }
-
+	void MoveInLineOfSight(Unit* pWho) override //Not sure if this is the correct approach
+	{
+		if (pWho->HasAura(AURA_ASHBRINGER))
+		{
+			m_creature->setFaction(FACTION_FRIENDLY);
+			m_hasashbringer = true;
+		}
+	}
     void Aggro(Unit* /*pWho*/) override
     {
+		if (m_hasashbringer)
+		{
+			//do nothing
+		}
+		else
+		{
         DoScriptText(SAY_MO_AGGRO, m_creature);
         DoCastSpellIfCan(m_creature, SPELL_RETRIBUTIONAURA);
 
         m_creature->CallForHelp(VISIBLE_RANGE);
+		}
     }
 
     void KilledUnit(Unit* /*pVictim*/) override
-    {
-        DoScriptText(SAY_MO_KILL, m_creature);
-    }
+	{
+		if (m_hasashbringer)
+		{
+			//do nothing
+		}
+		else
+			DoScriptText(SAY_MO_KILL, m_creature);
+	}
 
     void JustReachedHome() override
     {
@@ -157,8 +185,7 @@ struct boss_scarlet_commander_mograineAI : public ScriptedAI
             uiDamage = 0;
         }
     }
-
-    void SpellHit(Unit* /*pWho*/, const SpellEntry* pSpell) override
+    void SpellHit(Unit* pWho, const SpellEntry* pSpell) override
     {
         // When hit with ressurection say text
         if (pSpell->Id == SPELL_SCARLETRESURRECTION)
@@ -169,11 +196,119 @@ struct boss_scarlet_commander_mograineAI : public ScriptedAI
             if (m_pInstance)
                 m_pInstance->SetData(TYPE_MOGRAINE_AND_WHITE_EVENT, SPECIAL);
         }
+		if (pWho->GetTypeId() == TYPEID_PLAYER && pSpell->Id == SPELL_ASHBRINGER && !m_AshSpellTriggerOnce)
+		{
+			m_creature->SetFacingToObject(pWho);
+			m_uiSpeechTimer = 1000;
+			m_uiSpeechNum = 0;
+			m_playerGuid = pWho->GetObjectGuid();
+			m_AshSpellTriggerOnce = true;
+		}
     }
-
+	void JustSummoned(Creature* pSummoned) override
+	{
+		if (pSummoned->GetEntry() == NPC_MOGRAINE_TRANSFORM)
+		{
+			pSummoned->SetWalk(true);
+			pSummoned->GetMotionMaster()->MovePoint(1, aMograineThronePosition[0], aMograineThronePosition[1], aMograineThronePosition[2], true);
+		}
+	}
     void UpdateAI(const uint32 uiDiff) override
     {
-        if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
+		if (m_hasashbringer)
+		{
+			if (m_playerGuid)
+			{
+				Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid);
+				Creature* m_MograineTransform = GetClosestCreatureWithEntry(pPlayer, NPC_MOGRAINE_TRANSFORM, 200.0f, true, false);
+				if (m_uiSpeechTimer && m_AshSpellTriggerOnce)
+				{
+					if (m_uiSpeechTimer <= uiDiff)
+					{
+						if (m_pInstance->GetPlayerInMap(true, true))
+						{
+							switch (m_uiSpeechNum)
+							{
+							case 0:
+								m_creature->SetStandState(UNIT_STAND_STATE_KNEEL);
+								m_uiSpeechTimer = 1000; // Kneel to the player with Ashbringer
+								++m_uiSpeechNum;
+								break;
+							case 1:
+								m_creature->SummonCreature(NPC_MOGRAINE_TRANSFORM, aMograineSpawnPosition[0], aMograineSpawnPosition[1], aMograineSpawnPosition[2], aMograineSpawnPosition[3], TEMPSUMMON_MANUAL_DESPAWN, false);
+								DoScriptText(SAY_MOGRAINE_ASH_1, m_creature, pPlayer);
+								m_uiSpeechTimer = 43500; // Wait Till Mograine is at his sons place 43500
+								++m_uiSpeechNum;
+								break;
+							case 2:
+								DoScriptText(SAY_MOGRAINE_ASH_2, m_MograineTransform);
+								m_uiSpeechTimer = 3000; // Say Renault
+								++m_uiSpeechNum;
+								break;
+							case 3:
+								m_creature->SetFacingToObject(m_MograineTransform);
+								m_creature->SetStandState(UNIT_STAND_STATE_STAND);
+								m_uiSpeechTimer = 1000; // Face Father
+								++m_uiSpeechNum;
+								break;
+							case 4:
+								DoScriptText(SAY_MOGRAINE_ASH_3, m_creature);
+								m_uiSpeechTimer = 5000; // Say Father but how			
+								++m_uiSpeechNum;
+								break;
+							case 5:
+								DoScriptText(SAY_MOGRAINE_ASH_4, m_MograineTransform);
+								m_uiSpeechTimer = 3500;
+								++m_uiSpeechNum;
+								break;
+							case 6:
+								m_MograineTransform->HandleEmote(EMOTE_ONES_TALk);
+								m_uiSpeechTimer = 3500;
+								++m_uiSpeechNum;
+								break;
+							case 7:
+								m_MograineTransform->HandleEmote(EMOTE_ONES_POINT);
+								m_uiSpeechTimer = 3000;
+								++m_uiSpeechNum;
+								break;
+							case 8:
+								m_MograineTransform->HandleEmote(EMOTE_ONES_YELL);
+								m_uiSpeechTimer = 5000;
+								++m_uiSpeechNum;
+								break;
+							case 9:
+								DoScriptText(SAY_MOGRAINE_ASH_5, m_creature);
+								m_uiSpeechTimer = 3500; // Son Forgive me & fall to his knees
+								++m_uiSpeechNum;
+								break;
+							case 10:
+								m_MograineTransform->CastSpell(m_creature, SPELL_FORGIVENESS, true);
+								m_uiSpeechTimer = 2100; // cast forgiveness, kill Son
+								++m_uiSpeechNum;
+								break;
+							case 11:
+								m_creature->PlayDirectSound(SOUND_LIGHTNING_SCHOCK);
+								m_creature->SetStandState(UNIT_STAND_STATE_DEAD);
+								m_creature->DealDamage(m_creature, m_creature->GetHealth(), nullptr, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NONE, nullptr, false);
+								DoScriptText(SAY_MOGRAINE_ASH_6, m_MograineTransform);
+								m_uiSpeechTimer = 1000;
+								m_MograineTransform->ForcedDespawn(4000);
+								++m_uiSpeechNum;
+								break;
+							case 12:
+								m_uiSpeechTimer = 0;
+								break;
+							}
+						}
+					}
+					else
+						m_uiSpeechTimer -= uiDiff;
+				}
+			}
+		}
+		else
+		{
+		if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
             return;
 
         if (m_bHasDied && !m_bHeal && m_pInstance && m_pInstance->GetData(TYPE_MOGRAINE_AND_WHITE_EVENT) == SPECIAL)
@@ -217,6 +352,7 @@ struct boss_scarlet_commander_mograineAI : public ScriptedAI
             m_uiHammerOfJustice_Timer -= uiDiff;
 
         DoMeleeAttackIfReady();
+		}
     }
 };
 
