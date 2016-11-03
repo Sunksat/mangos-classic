@@ -4386,6 +4386,8 @@ INSERT INTO `script_texts` VALUES
 (-1999943, 'The Scarlet Crusade shall smite the wicked and drive evil from these lands!', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 'scarlet_monastery_aggro_4'),
 (-1000007, '%s attempts to run away in fear!', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, 0, 0, 'EMOTE_GENERIC_FLEE');
 
+DELETE FROM `creature_ai_scripts` WHERE `creature_id` IN (4295, 4298, 4301, 4294, 4300, 4303, 4540, 4302, 4299, 4542);
+
 UPDATE `creature_template` SET `AIName`='', `ScriptName`='ashbringer_event' WHERE  `entry`=4295;
 UPDATE `creature_template` SET `AIName`='', `ScriptName`='ashbringer_event' WHERE  `entry`=4298;
 UPDATE `creature_template` SET `AIName`='', `ScriptName`='ashbringer_event' WHERE  `entry`=4301;
