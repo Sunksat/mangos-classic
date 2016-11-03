@@ -4333,7 +4333,7 @@ INSERT INTO script_waypoint VALUES
 (9598, 35, 6557.279, -1211.125, 441.452, 0, ''),
 (9598, 36, 6574.568, -1204.589, 443.216, 0, 'SAY_EXIT_IRONTREE');
 
-INSERT INTO `npc_text` VALUES 
+INSERT IGNORE INTO `npc_text` VALUES 
 (70000, '', 'At last, the curse is lifted. Thank you hero.', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0),
 (70001, '', 'You mean, you don\'t know? The sword that you carry on your back - it is known as Ashbringer; named after its original owner.', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0),
 (70002, '', 'Aye, the Highlord Mograine: A founder of the original order of the Scarlet Crusade. A knight of unwavering faith and purity; Mograine would be betrayed by his own son and slain by Kel\'Thuzad\'s forces inside Stratholme. It is how I ended up here...', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0),
@@ -4353,15 +4353,16 @@ INSERT INTO `npc_text` VALUES
 (70016, '', '<High Inquisitor Fairbanks shakes his head.> $B$BNo, $R: only one of his sons is dead. The other lives... $B$B<High Inquisitor Fairbanks points to the sky.> $B$BThe Outland... Find him there...', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0);
 
 DELETE FROM `creature_template` WHERE `entry` =16440;
-INSERT INTO `creature_template` VALUES 
-(16440, 'Highlord Mograine', 'The Ashbringer', 60, 60, 16180, 0, 0, 0, 35, 35, 1.4, 0, 6, 3, 3, 0, 0, 0, 0, 1, 0, 0.8, 1.14286, 1, 3, 1, 1, 7.5, 1, -1, 1, 5000, 5000, 0, 0, 2, 2, 1, 1, 7, 24, 0, 2000, 2000, 0, 0, 0, 0, 0, 0, 0, 0, 617299803, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '');
+INSERT INTO `creature_template` (`Entry`, `Name`, `SubName`, `MinLevel`, `MaxLevel`, `ModelId1`, `ModelId2`, `ModelId3`, `ModelId4`, `FactionAlliance`, `FactionHorde`, `Scale`, `Family`, `CreatureType`, `InhabitType`, `RegenerateStats`, `RacialLeader`, `NpcFlags`, `UnitFlags`, `DynamicFlags`, `ExtraFlags`, `CreatureTypeFlags`, `SpeedWalk`, `SpeedRun`, `UnitClass`, `Rank`, `HealthMultiplier`, `PowerMultiplier`, `DamageMultiplier`, `DamageVariance`, `ArmorMultiplier`, `ExperienceMultiplier`, `MinLevelHealth`, `MaxLevelHealth`, `MinLevelMana`, `MaxLevelMana`, `MinMeleeDmg`, `MaxMeleeDmg`, `MinRangedDmg`, `MaxRangedDmg`, `Armor`, `MeleeAttackPower`, `RangedAttackPower`, `MeleeBaseAttackTime`, `RangedBaseAttackTime`, `DamageSchool`, `MinLootGold`, `MaxLootGold`, `LootId`, `PickpocketLootId`, `SkinningLootId`, `KillCredit1`, `KillCredit2`, `MechanicImmuneMask`, `SchoolImmuneMask`, `ResistanceHoly`, `ResistanceFire`, `ResistanceNature`, `ResistanceFrost`, `ResistanceShadow`, `ResistanceArcane`, `PetSpellDataId`, `MovementType`, `TrainerType`, `TrainerSpell`, `TrainerClass`, `TrainerRace`, `TrainerTemplateId`, `VendorTemplateId`, `GossipMenuId`, `EquipmentTemplateId`, `Civilian`, `AIName`, `ScriptName`)
+VALUES
+(16440,'Highlord Mograine','The Ashbringer',60,60,16180,0,0,0,35,35,1.4,0,6,3,3,0,0,0,0,1,0,0.8,1.14286,1,3,1,1,7.5,1,-1,1,5000,5000,0,0,2,2,1,1,7,24,0,2000,2000,0,0,0,0,0,0,0,0,617299803,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16440,0,'','');
 
-INSERT INTO `creature_linking_template` VALUES (4300, 189, 3976, 1, 80);
-INSERT INTO `creature_linking_template` VALUES (4301, 189, 3976, 1, 80);
-INSERT INTO `creature_linking_template` VALUES (4302, 189, 3976, 1, 80);
-INSERT INTO `creature_linking_template` VALUES (4303, 189, 3976, 1, 80);
-INSERT INTO `creature_linking_template` VALUES (4299, 189, 3976, 1, 80);
-INSERT INTO `creature_linking_template` VALUES (4540, 189, 3976, 1, 80);
+INSERT IGNORE INTO `creature_linking_template` VALUES (4300, 189, 3976, 1, 80);
+INSERT IGNORE INTO `creature_linking_template` VALUES (4301, 189, 3976, 1, 80);
+INSERT IGNORE INTO `creature_linking_template` VALUES (4302, 189, 3976, 1, 80);
+INSERT IGNORE INTO `creature_linking_template` VALUES (4303, 189, 3976, 1, 80);
+INSERT IGNORE INTO `creature_linking_template` VALUES (4299, 189, 3976, 1, 80);
+INSERT IGNORE INTO `creature_linking_template` VALUES (4540, 189, 3976, 1, 80);
 
 DELETE FROM `script_texts` WHERE `entry` IN (-1000007, -1999926, -1999927, -1999928, -1999929, -1999930, -1999931, -1999932, -1999933, -1999934, -1999935, -1999936, -1999937, -1999938, -1999939, -1999940, -1999941, -1999942, -1999943);
 INSERT INTO `script_texts` VALUES
@@ -4395,4 +4396,5 @@ UPDATE `creature_template` SET `AIName`='', `ScriptName`='ashbringer_event' WHER
 UPDATE `creature_template` SET `AIName`='', `ScriptName`='ashbringer_event' WHERE  `entry`=4302;
 UPDATE `creature_template` SET `AIName`='', `ScriptName`='ashbringer_event' WHERE  `entry`=4299;
 UPDATE `creature_template` SET `AIName`='', `ScriptName`='high_inquisitor_fairbanksAI' WHERE  `entry`=4542;
+
 -- EOF
