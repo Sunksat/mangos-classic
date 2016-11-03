@@ -113,11 +113,8 @@ void instance_scarlet_monastery::OnPlayerEnter(Player* player)
 {
 	if (player->HasAura(AURA_ASHBRINGER) && m_auiEncounter[TYPE_MOGRAINE_AND_WHITE_EVENT] != DONE) // Check for Ashbringer Aura & SM is not Cleared
 	{
-		Creature* pMograine = GetSingleCreatureFromStorage(NPC_MOGRAINE);
-		if (pMograine->isAlive())
-		{
-			DoOrSimulateScriptTextForThisInstance(SAY_MOGRAINE_ASHBRINGER, NPC_MOGRAINE);
-		}
+		// Creature* pMograine = GetSingleCreatureFromStorage(NPC_MOGRAINE);
+		DoOrSimulateScriptTextForThisInstance(SAY_MOGRAINE_ASHBRINGER, NPC_MOGRAINE);
 		m_hasashbringer = true;
 	}
 	else
@@ -217,6 +214,7 @@ struct ashbringer_event : public ScriptedAI
 	ScriptedInstance* m_pInstance;
 	void Aggro(Unit* /*pWho*/) override
 	{
+		// Can be replaced by only the rand part since all npcs pick from the same list of aggro says?
 		switch (m_creature->GetEntry())
 		{
 		case NPC_SCARLET_MYRMIDON:
