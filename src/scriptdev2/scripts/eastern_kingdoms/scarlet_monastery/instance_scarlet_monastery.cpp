@@ -113,7 +113,6 @@ void instance_scarlet_monastery::OnPlayerEnter(Player* player)
 {
 	if (player->HasAura(AURA_ASHBRINGER) && m_auiEncounter[TYPE_MOGRAINE_AND_WHITE_EVENT] != DONE) // Check for Ashbringer Aura & SM is not Cleared
 	{
-		// Creature* pMograine = GetSingleCreatureFromStorage(NPC_MOGRAINE);
 		DoOrSimulateScriptTextForThisInstance(SAY_MOGRAINE_ASHBRINGER, NPC_MOGRAINE);
 		m_hasashbringer = true;
 	}

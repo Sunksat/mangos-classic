@@ -86,6 +86,7 @@ struct boss_scarlet_commander_mograineAI : public ScriptedAI
     bool m_bHeal;
     bool m_bFakeDeath;
 	bool m_AshSpellTriggerOnce;
+	bool m_test;
 
     void Reset() override
     {
@@ -218,18 +219,18 @@ struct boss_scarlet_commander_mograineAI : public ScriptedAI
 		if (m_hasashbringer)
 		{
 			if (m_playerGuid)
-			{
-				Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid);
-				Creature* m_MograineTransform = GetClosestCreatureWithEntry(pPlayer, NPC_MOGRAINE_TRANSFORM, 200.0f, true, false);
+			{				
 				if (m_uiSpeechTimer && m_AshSpellTriggerOnce)
 				{
 					if (m_uiSpeechTimer <= uiDiff)
 					{
 						if (m_pInstance->GetPlayerInMap(true, true))
 						{
+							Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid);
+							Creature* m_MograineTransform = GetClosestCreatureWithEntry(pPlayer, NPC_MOGRAINE_TRANSFORM, 200.0f, true, false);
 							switch (m_uiSpeechNum)
 							{
-							case 0:
+							case 0:								
 								m_creature->SetStandState(UNIT_STAND_STATE_KNEEL);
 								m_uiSpeechTimer = 1000; // Kneel to the player with Ashbringer
 								++m_uiSpeechNum;
@@ -292,10 +293,12 @@ struct boss_scarlet_commander_mograineAI : public ScriptedAI
 								m_creature->DealDamage(m_creature, m_creature->GetHealth(), nullptr, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NONE, nullptr, false);
 								DoScriptText(SAY_MOGRAINE_ASH_6, m_MograineTransform);
 								m_uiSpeechTimer = 1000;
-								m_MograineTransform->ForcedDespawn(4000);
+								
+								//m_MograineTransform->RemoveFromWorld();
 								++m_uiSpeechNum;
 								break;
 							case 12:
+								m_MograineTransform->ForcedDespawn(3000);
 								m_uiSpeechTimer = 0;
 								break;
 							}
